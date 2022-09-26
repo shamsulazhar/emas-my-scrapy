@@ -2,8 +2,11 @@ from datetime import datetime
 
 
 class ProductGroup:
+    def __init__(self, timestamp) -> None:
+        self.timestamp = timestamp
+
     def __str__(self) -> str:
-        return f'time_stamp: {self.model.timestamp}\n'
+        return f'time_stamp: {self.timestamp}\n'
 
     def save(self):
         self.model.save()
@@ -12,6 +15,13 @@ class ProductGroup:
         if self.is_unique():
             self.create_model()
             self.save()
+
+    def is_unique(self):
+        table = self.__class__.model
+
+        results = self.uniqueness_test(table)
+
+        return len(results) == 0
 
     @classmethod
     def get_table_name(cls):
