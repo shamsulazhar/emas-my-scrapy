@@ -1,0 +1,2 @@
+**/__pycache__
+gold_my.db
