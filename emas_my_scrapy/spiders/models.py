@@ -25,5 +25,16 @@ class MaybankGoldInvestmentAccountModel(Model):
         table_name = 'MAYBANK_GOLD_INVESTMENT_ACCOUNT'
 
 
+class MaybankSilverInvestmentAccountModel(Model):
+    timestamp = CharField()
+    selling_rm_per_gram = TextField()
+    buying_rm_per_gram = TextField()
+
+    class Meta:
+        database = db
+        table_name = 'MAYBANK_SILVER_INVESTMENT_ACCOUNT'
+
+
 db.connect()
-db.create_tables([MaybankGoldBullionModel, MaybankGoldInvestmentAccountModel])
+db.create_tables([MaybankGoldBullionModel, MaybankGoldInvestmentAccountModel,
+                 MaybankSilverInvestmentAccountModel])

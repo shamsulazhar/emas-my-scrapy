@@ -77,6 +77,13 @@ class MaybankPaperProductGroup(MaybankProductGroup):
         self.selling_rm_per_gram = data[0]
         self.buying_rm_per_gram = data[1]
 
+    def create_model(self):
+        self.model = self.__class__.model.create(
+            timestamp=self.timestamp,
+            selling_rm_per_gram=self.selling_rm_per_gram,
+            buying_rm_per_gram=self.buying_rm_per_gram
+        )
+
     def uniqueness_test(self, table):
         return table.select().where(table.timestamp == self.timestamp)
 
@@ -103,13 +110,6 @@ class MaybankPaperProductGroup(MaybankProductGroup):
 class MaybankGoldInvestmentAccount(MaybankPaperProductGroup):
     model = MaybankGoldInvestmentAccountModel
 
-    def create_model(self):
-        self.model = self.__class__.model.create(
-            timestamp=self.timestamp,
-            selling_rm_per_gram=self.selling_rm_per_gram,
-            buying_rm_per_gram=self.buying_rm_per_gram
-        )
-
     @classmethod
     def extract_date_time_from_node(cls, response):
         raw_date_time_str = response.xpath(
@@ -123,13 +123,24 @@ class MaybankGoldInvestmentAccount(MaybankPaperProductGroup):
 
 
 class MaybankSilverInvestmentAccount(MaybankPaperProductGroup):
-    pass
+    model = MaybankSilverInvestmentAccountModel
+
+    @classmethod
+    def extract_date_time_from_node(cls, response):
+        raw_date_time_str = response.xpath(
+            '//*[@id="iw_comp1542994945699"]/div/section/main/div/article[2]/section/div/section/div/div[2]/div[1]/p//text()').get()
+
+        return datetime.strptime(raw_date_time_str, 'Effective on %d %b %Y %I:%M %p')
+
+    @classmethod
+    def get_price_table_node(cls, response):
+        return response.xpath('//*[@id="iw_comp1542994945699"]/div/section/main/div/article[2]/section/div/section/div/div[2]/div[1]/table')
 
 
 class Maybank(Vendor):
     url = 'https://www.maybank2u.com.my/maybank2u/malaysia/en/personal/rates/gold_and_silver.page'
     product_groups = [
-        # MaybankSilverInvestmentAccount,
+        MaybankSilverInvestmentAccount,
         MaybankGoldInvestmentAccount,
         MaybankGoldBullion
     ]
