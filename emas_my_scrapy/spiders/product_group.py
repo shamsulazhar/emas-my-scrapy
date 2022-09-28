@@ -24,6 +24,14 @@ class ProductGroup:
         return len(results) == 0
 
     @classmethod
+    def check_and_return_valid_date(cls, format_str, raw_date_time_str):
+        timestamp = datetime.strptime(raw_date_time_str, format_str)
+
+        assert datetime.strftime(timestamp, format_str) == raw_date_time_str
+
+        return timestamp
+
+    @classmethod
     def get_table_name(cls):
         return cls.model._meta.table_name
 

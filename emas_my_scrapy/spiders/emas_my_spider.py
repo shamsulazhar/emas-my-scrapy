@@ -1,14 +1,13 @@
 import scrapy
 from emas_my_scrapy.spiders.maybank import Maybank
-# from uob import UOB
-# from pg import PG
+from emas_my_scrapy.spiders.pg import PG
 
 
 class EmasMy(scrapy.Spider):
     name = 'emas_my'
     vendors = [
         Maybank(),
-        # PG(),
+        PG(),
         # UOB()
     ]
 

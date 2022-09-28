@@ -38,7 +38,7 @@ class MaybankGoldBullion(MaybankProductGroup):
         raw_date_time_str = response.xpath(
             '//*[@id="iw_comp1542994945699"]/div/section/main/div/article[2]/section/div/section/div/div[1]/div[2]/p//text()').get()
 
-        return datetime.strptime(raw_date_time_str, 'Effective on %d %b %Y %I:%M %p')
+        return cls.check_and_return_valid_date('Effective on %d %b %Y %I:%M %p', raw_date_time_str)
 
     @classmethod
     def get_price_table_node(cls, response):
@@ -115,7 +115,8 @@ class MaybankGoldInvestmentAccount(MaybankPaperProductGroup):
         raw_date_time_str = response.xpath(
             '//*[@id="iw_comp1542994945699"]/div/section/main/div/article[2]/section/div/section/div/div[1]/div[1]/p//text()').get()
 
-        return datetime.strptime(raw_date_time_str, 'Effective on %d %b %Y %I:%M %p')
+        # return datetime.strptime(raw_date_time_str, 'Effective on %d %b %Y %I:%M %p')
+        return cls.check_and_return_valid_date('Effective on %d %b %Y %I:%M %p', raw_date_time_str)
 
     @classmethod
     def get_price_table_node(cls, response):
@@ -130,7 +131,8 @@ class MaybankSilverInvestmentAccount(MaybankPaperProductGroup):
         raw_date_time_str = response.xpath(
             '//*[@id="iw_comp1542994945699"]/div/section/main/div/article[2]/section/div/section/div/div[2]/div[1]/p//text()').get()
 
-        return datetime.strptime(raw_date_time_str, 'Effective on %d %b %Y %I:%M %p')
+        # return datetime.strptime(raw_date_time_str, 'Effective on %d %b %Y %I:%M %p')
+        return cls.check_and_return_valid_date('Effective on %d %b %Y %I:%M %p', raw_date_time_str)
 
     @classmethod
     def get_price_table_node(cls, response):
@@ -144,6 +146,3 @@ class Maybank(Vendor):
         MaybankGoldInvestmentAccount,
         MaybankGoldBullion
     ]
-
-    def get_product_groups(self):
-        return Maybank.product_groups
