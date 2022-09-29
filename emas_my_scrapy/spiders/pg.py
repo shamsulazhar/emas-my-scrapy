@@ -37,10 +37,6 @@ class PGProductGroup(ProductGroup):
 
         return table
 
-
-class PGGoldBar24K(PGProductGroup):
-    model = PGGoldBar24KModel
-
     @classmethod
     def extract_date_time_from_node(cls, response):
         raw_date_time_str = response.xpath(
@@ -51,13 +47,7 @@ class PGGoldBar24K(PGProductGroup):
         return timestamp
 
     @classmethod
-    def table_test(cls, table):
-        rows = table.xpath('.//tr')
-        return len(rows) == 7 and (table.xpath('./tr[7]/td[1]//a/text()').get() == '1000 gram')
-
-    @classmethod
     def check_header(cls, header_nodes):
-        assert header_nodes[0].xpath('./p/text()').get() == 'Weight'
         assert header_nodes[1].xpath('./p/text()').get() == 'PG Sell (RM)'
         assert header_nodes[2].xpath('./p/text()').get() == 'PG Buy (RM)'
 
@@ -71,8 +61,37 @@ class PGGoldBar24K(PGProductGroup):
         return table
 
 
+class PGGoldBar24K(PGProductGroup):
+    model = PGGoldBar24KModel
+
+    @classmethod
+    def table_test(cls, table):
+        rows = table.xpath('.//tr')
+        return len(rows) == 7 and (table.xpath('./tr[7]/td[1]//a/text()').get() == '1000 gram')
+
+    @classmethod
+    def check_header(cls, header_nodes):
+        assert header_nodes[0].xpath('./p/text()').get() == 'Weight'
+        super().check_header(header_nodes)
+
+
+class PGGoldGoldWaferDinar24KModel(PGProductGroup):
+    model = PGGoldGoldWaferDinar24KModel
+
+    @classmethod
+    def check_header(cls, header_nodes):
+        assert header_nodes[0].xpath('./p/text()').get() == 'Dinar'
+        super().check_header(header_nodes)
+
+    @classmethod
+    def table_test(cls, table):
+        rows = table.xpath('.//tr')
+        return len(rows) == 4 and (table.xpath('.//tr[4]/td[1]//a/text()').get() == '10 Dinar')
+
+
 class PG(Vendor):
     url = 'https://publicgold.com.my/'
     product_groups = [
-        PGGoldBar24K
+        PGGoldBar24K,
+        PGGoldGoldWaferDinar24KModel
     ]

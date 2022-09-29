@@ -59,7 +59,12 @@ class PGGoldBar24KModel(PGProductGroupModel):
     pass
 
 
+class PGGoldGoldWaferDinar24KModel(PGProductGroupModel):
+    pass
+
+
 PGGoldBar24KModel._meta.table_name = 'PUBLIC_GOLD_GOLD_BAR_24K'
+PGGoldGoldWaferDinar24KModel.table_name = 'PUBLIC_GOLD_GOLD_WAFER_DINAR_24K'
 
 db.connect()
 db.create_tables([
@@ -67,4 +72,5 @@ db.create_tables([
     MaybankGoldInvestmentAccountModel,
     MaybankSilverInvestmentAccountModel,
     PGGoldBar24KModel,
+    PGGoldGoldWaferDinar24KModel,
 ])
