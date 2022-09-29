@@ -71,12 +71,30 @@ PGGoldBar24KModel._meta.table_name = 'PUBLIC_GOLD_GOLD_BAR_24K'
 PGGoldGoldWaferDinar24KModel._meta.table_name = 'PUBLIC_GOLD_GOLD_WAFER_DINAR_24K'
 PGGoldSmallBarWafer24KModel._meta.table_name = 'PUBLIC_GOLD_SMALL_BAR_WAFER_24K'
 
+# ------------------------------------------------------------------------------
+# UOB
+# ------------------------------------------------------------------------------
+
+
+class UOBGoldBullionModel(ProductGroupModel):
+    weight = TextField()
+    gold_type = TextField()
+    wm_bank_selling_rm = TextField()
+    bank_buying = TextField()
+    em_bank_selling_rm = TextField()
+
+
+UOBGoldBullionModel._meta.table_name = 'UOB_GOLD_BULLION'
+
 db.connect()
 db.create_tables([
     MaybankGoldBullionModel,
     MaybankGoldInvestmentAccountModel,
     MaybankSilverInvestmentAccountModel,
+    # -------------------------------
     PGGoldBar24KModel,
     PGGoldGoldWaferDinar24KModel,
     PGGoldSmallBarWafer24KModel,
+    # -------------------------------
+    UOBGoldBullionModel
 ])

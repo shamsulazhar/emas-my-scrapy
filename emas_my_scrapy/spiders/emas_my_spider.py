@@ -1,6 +1,7 @@
 import scrapy
 from emas_my_scrapy.spiders.maybank import Maybank
 from emas_my_scrapy.spiders.pg import PG
+from emas_my_scrapy.spiders.uob import UOB
 
 
 class EmasMy(scrapy.Spider):
@@ -8,7 +9,7 @@ class EmasMy(scrapy.Spider):
     vendors = [
         Maybank(),
         PG(),
-        # UOB()
+        UOB()
     ]
 
     def start_requests(self):
