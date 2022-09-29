@@ -125,10 +125,31 @@ class PGGoldSmallBarWafer24K(PGProductGroup):
         return len(rows) == 5 and (table.xpath('.//tr[4]/td[1]//p//a/text()').get() == '1/2 Dinar')
 
 
+class PGClassicBungamasTaiFook24K(PGProductGroup):
+    model = PGClassicBungamasTaiFook24KModel
+
+    def __init__(self, timestamp, data) -> None:
+        super().__init__(timestamp, data)
+
+        self.pg_sell = data[1]
+        self.pg_buy = data[2]
+
+    @classmethod
+    def table_test(cls, table):
+        rows = table.xpath('.//tr')
+        return len(rows) == 5 and (table.xpath('.//tr[5]/td[1]//a/text()').get() == '100 gram')
+
+    @classmethod
+    def check_header(cls, header_nodes):
+        assert header_nodes[0].xpath('./p/text()').get() == 'Weight'
+        super().check_header(header_nodes)
+
+
 class PG(Vendor):
     url = 'https://publicgold.com.my/'
     product_groups = [
         PGGoldBar24K,
         PGGoldGoldWaferDinar24K,
-        PGGoldSmallBarWafer24K
+        PGGoldSmallBarWafer24K,
+        PGClassicBungamasTaiFook24K
     ]

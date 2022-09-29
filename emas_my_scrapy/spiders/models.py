@@ -67,9 +67,15 @@ class PGGoldSmallBarWafer24KModel(PGProductGroupModel):
     pg_sell = TextField()
 
 
+class PGClassicBungamasTaiFook24KModel(PGProductGroupModel):
+    pg_sell = TextField()
+    pg_buy = TextField()
+
+
 PGGoldBar24KModel._meta.table_name = 'PUBLIC_GOLD_GOLD_BAR_24K'
 PGGoldGoldWaferDinar24KModel._meta.table_name = 'PUBLIC_GOLD_GOLD_WAFER_DINAR_24K'
 PGGoldSmallBarWafer24KModel._meta.table_name = 'PUBLIC_GOLD_SMALL_BAR_WAFER_24K'
+PGClassicBungamasTaiFook24KModel._meta.table_name = 'PUBLIC_GOLD_CLASSIC_BUNGAMAS_TAI_FOOK_24K'
 
 # ------------------------------------------------------------------------------
 # UOB
@@ -95,6 +101,7 @@ db.create_tables([
     PGGoldBar24KModel,
     PGGoldGoldWaferDinar24KModel,
     PGGoldSmallBarWafer24KModel,
+    PGClassicBungamasTaiFook24KModel,
     # -------------------------------
     UOBGoldBullionModel
 ])
