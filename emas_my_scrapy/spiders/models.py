@@ -51,20 +51,25 @@ MaybankSilverInvestmentAccountModel._meta.table_name = 'MAYBANK_SILVER_INVESTMEN
 
 class PGProductGroupModel(ProductGroupModel):
     weight = TextField()
+
+
+class PGGoldBar24KModel(PGProductGroupModel):
     pg_sell = TextField()
     pg_buy = TextField()
 
 
-class PGGoldBar24KModel(PGProductGroupModel):
-    pass
-
-
 class PGGoldGoldWaferDinar24KModel(PGProductGroupModel):
-    pass
+    pg_sell = TextField()
+    pg_buy = TextField()
+
+
+class PGGoldSmallBarWafer24KModel(PGProductGroupModel):
+    pg_sell = TextField()
 
 
 PGGoldBar24KModel._meta.table_name = 'PUBLIC_GOLD_GOLD_BAR_24K'
-PGGoldGoldWaferDinar24KModel.table_name = 'PUBLIC_GOLD_GOLD_WAFER_DINAR_24K'
+PGGoldGoldWaferDinar24KModel._meta.table_name = 'PUBLIC_GOLD_GOLD_WAFER_DINAR_24K'
+PGGoldSmallBarWafer24KModel._meta.table_name = 'PUBLIC_GOLD_SMALL_BAR_WAFER_24K'
 
 db.connect()
 db.create_tables([
@@ -73,4 +78,5 @@ db.create_tables([
     MaybankSilverInvestmentAccountModel,
     PGGoldBar24KModel,
     PGGoldGoldWaferDinar24KModel,
+    PGGoldSmallBarWafer24KModel,
 ])

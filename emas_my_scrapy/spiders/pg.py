@@ -10,8 +10,6 @@ class PGProductGroup(ProductGroup):
         super().__init__(timestamp)
 
         self.weight = data[0]
-        self.pg_sell = data[1]
-        self.pg_buy = data[2]
 
     def create_model(self):
         self.model = self.__class__.model.create(
@@ -64,6 +62,12 @@ class PGProductGroup(ProductGroup):
 class PGGoldBar24K(PGProductGroup):
     model = PGGoldBar24KModel
 
+    def __init__(self, timestamp, data) -> None:
+        super().__init__(timestamp, data)
+
+        self.pg_sell = data[1]
+        self.pg_buy = data[2]
+
     @classmethod
     def table_test(cls, table):
         rows = table.xpath('.//tr')
@@ -75,8 +79,14 @@ class PGGoldBar24K(PGProductGroup):
         super().check_header(header_nodes)
 
 
-class PGGoldGoldWaferDinar24KModel(PGProductGroup):
+class PGGoldGoldWaferDinar24K(PGProductGroup):
     model = PGGoldGoldWaferDinar24KModel
+
+    def __init__(self, timestamp, data) -> None:
+        super().__init__(timestamp, data)
+
+        self.pg_sell = data[1]
+        self.pg_buy = data[2]
 
     @classmethod
     def check_header(cls, header_nodes):
@@ -89,9 +99,36 @@ class PGGoldGoldWaferDinar24KModel(PGProductGroup):
         return len(rows) == 4 and (table.xpath('.//tr[4]/td[1]//a/text()').get() == '10 Dinar')
 
 
+class PGGoldSmallBarWafer24K(PGProductGroup):
+    model = PGGoldSmallBarWafer24KModel
+
+    def __init__(self, timestamp, data) -> None:
+        super().__init__(timestamp, data)
+
+        self.pg_sell = data[1]
+
+    def create_model(self):
+        self.model = self.__class__.model.create(
+            timestamp=self.timestamp,
+            weight=self.weight,
+            pg_sell=self.pg_sell,
+        )
+
+    @classmethod
+    def check_header(cls, header_nodes):
+        assert header_nodes[0].xpath('./p/text()').get() == 'Weight'
+        assert header_nodes[1].xpath('./p/text()').get() == 'PG Sell (RM)'
+
+    @classmethod
+    def table_test(cls, table):
+        rows = table.xpath('.//tr')
+        return len(rows) == 5 and (table.xpath('.//tr[4]/td[1]//p//a/text()').get() == '1/2 Dinar')
+
+
 class PG(Vendor):
     url = 'https://publicgold.com.my/'
     product_groups = [
         PGGoldBar24K,
-        PGGoldGoldWaferDinar24KModel
+        PGGoldGoldWaferDinar24K,
+        PGGoldSmallBarWafer24K
     ]
