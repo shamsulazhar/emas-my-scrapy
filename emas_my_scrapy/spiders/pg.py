@@ -5,6 +5,23 @@ from emas_my_scrapy.spiders.product_group import ProductGroup
 from emas_my_scrapy.spiders.models import *
 
 
+class PGHeaderWithWeight:
+    @classmethod
+    def check_header(cls, header_nodes):
+        assert header_nodes[0].xpath('./p/text()').get() == 'Weight'
+        super().check_header(header_nodes)
+
+
+def init_buy_sell_data(self, data):
+    self.pg_sell = data[1]
+    self.pg_buy = data[2]
+
+
+def check_table_rowcount_and_test_cell(table, expected_rows, test_cell_xpath, expected_test_cell_value):
+    rows = table.xpath('.//tr')
+    return len(rows) == expected_rows and (table.xpath(test_cell_xpath).get() == expected_test_cell_value)
+
+
 class PGProductGroup(ProductGroup):
     def __init__(self, timestamp, data) -> None:
         super().__init__(timestamp)
@@ -59,24 +76,17 @@ class PGProductGroup(ProductGroup):
         return table
 
 
-class PGGoldBar24K(PGProductGroup):
+class PGGoldBar24K(PGProductGroup,  PGHeaderWithWeight):
     model = PGGoldBar24KModel
 
     def __init__(self, timestamp, data) -> None:
         super().__init__(timestamp, data)
 
-        self.pg_sell = data[1]
-        self.pg_buy = data[2]
+        init_buy_sell_data(self, data)
 
     @classmethod
     def table_test(cls, table):
-        rows = table.xpath('.//tr')
-        return len(rows) == 7 and (table.xpath('./tr[7]/td[1]//a/text()').get() == '1000 gram')
-
-    @classmethod
-    def check_header(cls, header_nodes):
-        assert header_nodes[0].xpath('./p/text()').get() == 'Weight'
-        super().check_header(header_nodes)
+        return check_table_rowcount_and_test_cell(table, 7, './tr[7]/td[1]//a/text()', '1000 gram')
 
 
 class PGGoldGoldWaferDinar24K(PGProductGroup):
@@ -85,8 +95,7 @@ class PGGoldGoldWaferDinar24K(PGProductGroup):
     def __init__(self, timestamp, data) -> None:
         super().__init__(timestamp, data)
 
-        self.pg_sell = data[1]
-        self.pg_buy = data[2]
+        init_buy_sell_data(self, data)
 
     @classmethod
     def check_header(cls, header_nodes):
@@ -95,8 +104,7 @@ class PGGoldGoldWaferDinar24K(PGProductGroup):
 
     @classmethod
     def table_test(cls, table):
-        rows = table.xpath('.//tr')
-        return len(rows) == 4 and (table.xpath('.//tr[4]/td[1]//a/text()').get() == '10 Dinar')
+        return check_table_rowcount_and_test_cell(table, 4, './/tr[4]/td[1]//a/text()', '10 Dinar')
 
 
 class PGGoldSmallBarWafer24K(PGProductGroup):
@@ -121,28 +129,51 @@ class PGGoldSmallBarWafer24K(PGProductGroup):
 
     @classmethod
     def table_test(cls, table):
-        rows = table.xpath('.//tr')
-        return len(rows) == 5 and (table.xpath('.//tr[4]/td[1]//p//a/text()').get() == '1/2 Dinar')
+        return check_table_rowcount_and_test_cell(table, 5, './/tr[4]/td[1]//p//a/text()', '1/2 Dinar')
 
 
-class PGClassicBungamasTaiFook24K(PGProductGroup):
+class PGClassicBungamasTaiFook24K(PGProductGroup, PGHeaderWithWeight):
     model = PGClassicBungamasTaiFook24KModel
 
     def __init__(self, timestamp, data) -> None:
         super().__init__(timestamp, data)
 
-        self.pg_sell = data[1]
-        self.pg_buy = data[2]
+        init_buy_sell_data(self, data)
 
     @classmethod
     def table_test(cls, table):
-        rows = table.xpath('.//tr')
-        return len(rows) == 5 and (table.xpath('.//tr[5]/td[1]//a/text()').get() == '100 gram')
+        return check_table_rowcount_and_test_cell(table, 5, './/tr[5]/td[1]//a/text()', '100 gram')
+
+
+class PGFlexibar24K(PGProductGroup, PGHeaderWithWeight):
+    model = PGFlexibar24KModel
+
+    def __init__(self, timestamp, data) -> None:
+        super().__init__(timestamp, data)
+
+        init_buy_sell_data(self, data)
+
+    @classmethod
+    def table_test(cls, table):
+        return check_table_rowcount_and_test_cell(table, 2, './/tr[2]//td[1]/p/text()', '50 gram')
+
+
+class PGGoldGoldWaferDinar22K(PGProductGroup):
+    model = PGGoldGoldWaferDinar22KModel
+
+    def __init__(self, timestamp, data) -> None:
+        super().__init__(timestamp, data)
+
+        init_buy_sell_data(self, data)
 
     @classmethod
     def check_header(cls, header_nodes):
-        assert header_nodes[0].xpath('./p/text()').get() == 'Weight'
+        assert header_nodes[0].xpath('./p/text()').get() == 'Dinar'
         super().check_header(header_nodes)
+
+    @classmethod
+    def table_test(cls, table):
+        return check_table_rowcount_and_test_cell(table, 2, './tr/td[1]/p/text()', '1 Dinar')
 
 
 class PG(Vendor):
@@ -151,5 +182,7 @@ class PG(Vendor):
         PGGoldBar24K,
         PGGoldGoldWaferDinar24K,
         PGGoldSmallBarWafer24K,
-        PGClassicBungamasTaiFook24K
+        PGClassicBungamasTaiFook24K,
+        PGFlexibar24K,
+        PGGoldGoldWaferDinar22K
     ]
