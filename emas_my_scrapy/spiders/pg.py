@@ -201,6 +201,19 @@ class PGGoldJewellery22K(PGProductGroup):
         return check_table_rowcount_and_test_cell(table, 2, './tr/td[1]/p/text()', '1 gram')
 
 
+class PGSilverBullion(PGProductGroup, PGHeaderWithWeight):
+    model = PGSilverBullionModel
+
+    def __init__(self, timestamp, data) -> None:
+        super().__init__(timestamp, data)
+
+        init_buy_sell_data(self, data)
+
+    @classmethod
+    def table_test(cls, table):
+        return check_table_rowcount_and_test_cell(table, 6, './/tr[6]/td[1]/p//text()', '5 kilogram')
+
+
 class PG(Vendor):
     url = 'https://publicgold.com.my/'
     product_groups = [
@@ -210,5 +223,6 @@ class PG(Vendor):
         PGClassicBungamasTaiFook24K,
         PGFlexibar24K,
         PGGoldGoldWaferDinar22K,
-        PGGoldJewellery22K
+        PGGoldJewellery22K,
+        PGSilverBullion
     ]
