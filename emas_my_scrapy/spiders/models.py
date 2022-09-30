@@ -2,7 +2,14 @@ from sqlite3 import Timestamp
 from emas_my_scrapy.spiders.product_group import ProductGroup
 from peewee import *
 
-db = SqliteDatabase('gold_my.db')
+# db = SqliteDatabase('gold_my.db')
+# db = MySQLDatabase('ab86864_MyGold', user='root', password='root', port=8889)
+db = MySQLDatabase(
+    'ab86864_MyGold',
+    user='ab86864_MyGold',
+    password='QQDqp@oCqoS`n2gH7o',
+    port=5522
+)
 
 
 class ProductGroupModel(Model):
@@ -91,6 +98,11 @@ class PGSilverBullionModel(PGProductGroupModel):
     pg_buy = TextField()
 
 
+class PGSilverWaferDirhamModel(PGProductGroupModel):
+    pg_sell = TextField()
+    pg_buy = TextField()
+
+
 PGGoldBar24KModel._meta.table_name = 'PUBLIC_GOLD_GOLD_BAR_24K'
 PGGoldGoldWaferDinar24KModel._meta.table_name = 'PUBLIC_GOLD_GOLD_WAFER_DINAR_24K'
 PGGoldSmallBarWafer24KModel._meta.table_name = 'PUBLIC_GOLD_SMALL_BAR_WAFER_24K'
@@ -99,6 +111,7 @@ PGFlexibar24KModel._meta.table_name = 'PUBLIC_GOLD_FLEXIBAR_24K'
 PGGoldGoldWaferDinar22KModel._meta.table_name = 'PUBLIC_GOLD_GOLD_WAFER_DINAR_22K'
 PGGoldJewellery22KModel._meta.table_name = 'PUBLIC_GOLD_GOLD_JEWELLERY_22K'
 PGSilverBullionModel._meta.table_name = 'PUBLIC_GOLD_SILVER_BULLION'
+PGSilverWaferDirhamModel._meta.table_name = 'PUBLIC_GOLD_SILVER_WAFER_DIRHAM'
 # ------------------------------------------------------------------------------
 # UOB
 # ------------------------------------------------------------------------------
@@ -128,6 +141,7 @@ db.create_tables([
     PGGoldGoldWaferDinar22KModel,
     PGGoldJewellery22KModel,
     PGSilverBullionModel,
+    PGSilverWaferDirhamModel,
     # -------------------------------
     UOBGoldBullionModel
 ])
