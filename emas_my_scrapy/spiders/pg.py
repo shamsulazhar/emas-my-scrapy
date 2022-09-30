@@ -176,6 +176,31 @@ class PGGoldGoldWaferDinar22K(PGProductGroup):
         return check_table_rowcount_and_test_cell(table, 2, './tr/td[1]/p/text()', '1 Dinar')
 
 
+class PGGoldJewellery22K(PGProductGroup):
+    model = PGGoldJewellery22KModel
+
+    def __init__(self, timestamp, data) -> None:
+        super().__init__(timestamp, data)
+
+        self.pg_buy = data[1]
+
+    def create_model(self):
+        self.model = self.__class__.model.create(
+            timestamp=self.timestamp,
+            weight=self.weight,
+            pg_buy=self.pg_buy
+        )
+
+    @classmethod
+    def check_header(cls, header_nodes):
+        assert header_nodes[0].xpath('./p/text()').get() == 'Weight'
+        assert header_nodes[1].xpath('./p/text()').get() == 'PG Buy (RM)'
+
+    @classmethod
+    def table_test(cls, table):
+        return check_table_rowcount_and_test_cell(table, 2, './tr/td[1]/p/text()', '1 gram')
+
+
 class PG(Vendor):
     url = 'https://publicgold.com.my/'
     product_groups = [
@@ -184,5 +209,6 @@ class PG(Vendor):
         PGGoldSmallBarWafer24K,
         PGClassicBungamasTaiFook24K,
         PGFlexibar24K,
-        PGGoldGoldWaferDinar22K
+        PGGoldGoldWaferDinar22K,
+        PGGoldJewellery22K
     ]
