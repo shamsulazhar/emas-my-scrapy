@@ -8,7 +8,7 @@ class EmasMy(scrapy.Spider):
     name = 'emas_my'
     vendors = [
         Maybank(),
-        PG(),
+        # PG(),
         UOB()
     ]
 

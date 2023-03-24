@@ -124,6 +124,7 @@ class PGGoldSmallBarWafer24K(PGProductGroup):
 
     @classmethod
     def check_header(cls, header_nodes):
+        print('header nodes: ' + str(header_nodes[0].get()))
         assert header_nodes[0].xpath('./p/text()').get() == 'Weight'
         assert header_nodes[1].xpath('./p/text()').get() == 'PG Sell (RM)'
 

@@ -4,6 +4,7 @@ class Vendor:
 
     def parse(self, response):
         for product_group in self.get_product_groups():
+            print('product group: ' + str(product_group))
             product_data_table = product_group.extract_data_from_root_node(
                 response)
 
